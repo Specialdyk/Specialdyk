@@ -1,0 +1,18 @@
+//SPDX-License-Identifier:MIT
+pragma solidity ^0.8.10;
+
+contract PiggyBank {
+    event Deposit(uint amount);
+    event Withdraw(uint amount);
+
+    address payable owner;
+    
+    receive() external  payable {
+        emit Deposit(msg.value);
+    }
+    function withdrawMoney() public {
+        require(msg.sender == owner, "only owner can call this function");
+        emit Withdraw(address(this).balance);
+       selfdestruct(payable(msg.sender));
+    }
+}
